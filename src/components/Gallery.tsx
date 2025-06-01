@@ -54,8 +54,9 @@ const Gallery: React.FC<GalleryProps> = ({ isOpen, onClose }) => {
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 overflow-y-auto">
       {selectedImageIndex !== null ? (
+        // Fullscreen view (unchanged)
         <div className="relative w-full h-full flex items-center justify-center">
           <button
             onClick={closeFullscreen}
@@ -88,16 +89,17 @@ const Gallery: React.FC<GalleryProps> = ({ isOpen, onClose }) => {
           />
         </div>
       ) : (
-        <div className="relative w-full max-w-4xl bg-white rounded-lg shadow-xl animate-fade-in">
+        // Scrollable Grid View
+        <div className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white rounded-lg shadow-xl animate-fade-in">
           <button
             onClick={onClose}
-            className="absolute right-4 top-4 text-stone-600 hover:text-stone-800 transition-colors"
+            className="sticky top-4 right-4 float-right text-stone-600 hover:text-stone-800 transition-colors z-10"
             aria-label="Close gallery"
           >
             <X size={24} />
           </button>
 
-          <div className="p-6">
+          <div className="p-6 pt-2">
             <h2 className="text-2xl font-serif font-bold text-blue-950 mb-6">
               Photo Gallery
             </h2>
