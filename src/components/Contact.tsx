@@ -129,7 +129,7 @@ const Contact = () => {
           </h2>
           <p className="text-lg text-stone-600 max-w-3xl mx-auto">
             Ready for an unforgettable lakeside getaway? Check us out on VRBO or
-            submit a booking request with us to avoid additional rates!
+            submit a direct booking request with us to avoid additional fees!
           </p>
           <a
             href="https://t.vrbo.io/6YCKSv4iPTb"
@@ -352,7 +352,11 @@ const Contact = () => {
                   Property Policies
                 </h4>
                 <ul className="space-y-2 text-stone-700">
-                  <li>• Must book for a week (Saturday - Saturday)</li>
+                  <li>
+                    • Summer Bookings - Must book for a week (Saturday -
+                    Saturday)
+                  </li>
+                  <li>• Offseason Bookings - 3 night minimum</li>
                   <li>• Check-in: 4:00 PM</li>
                   <li>• Check-out: 10:00 AM</li>
                   <li>• No smoking</li>
