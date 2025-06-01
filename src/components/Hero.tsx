@@ -1,16 +1,12 @@
 import ImageCarousel from "./ImageCarousel";
 import Gallery from "./Gallery";
 import { useState } from "react";
-import Gallery from "./Gallery";
-import { useState } from "react";
 import lakeViewImg from "../images/lake_view.jpg";
 import homeViewImg from "../images/home_view.jpg";
 import houseFromLakeImg from "../images/house_from_lake.jpg";
 import livingRoomImg from "../images/living_room.jpg";
 
 const Hero = () => {
-  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
-
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
 
   const images = [

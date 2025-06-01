@@ -29,26 +29,6 @@ const Header = () => {
       alt: "Beautiful interior with lake views",
     },
   ];
-  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
-
-  const images = [
-    {
-      src: lakeViewImg,
-      alt: "Lake house with stunning water view",
-    },
-    {
-      src: homeViewImg,
-      alt: "Cozy lakeside retreat",
-    },
-    {
-      src: houseFromLakeImg,
-      alt: "Private dock and beach",
-    },
-    {
-      src: livingRoomImg,
-      alt: "Beautiful interior with lake views",
-    },
-  ];
 
   useEffect(() => {
     const handleScroll = () => {
