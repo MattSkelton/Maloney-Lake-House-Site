@@ -10,8 +10,6 @@ interface GalleryProps {
 const Gallery: React.FC<GalleryProps> = ({ images, isOpen, onClose }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
-  if (!isOpen) return null;
-
   const handleImageClick = (index: number) => {
     setSelectedImageIndex(index);
   };
@@ -47,6 +45,11 @@ const Gallery: React.FC<GalleryProps> = ({ images, isOpen, onClose }) => {
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
   }, [selectedImageIndex]);
+
+  // Move the conditional return after all hooks
+  if (!isOpen) {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
