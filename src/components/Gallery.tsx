@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { galleryImages } from "../utils/imageLoader";
 
 interface GalleryProps {
-  images: { src: string; alt: string }[];
   isOpen: boolean;
   onClose: () => void;
 }
 
-const Gallery: React.FC<GalleryProps> = ({ images, isOpen, onClose }) => {
+const Gallery: React.FC<GalleryProps> = ({ isOpen, onClose }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
     null
   );
@@ -19,16 +19,16 @@ const Gallery: React.FC<GalleryProps> = ({ images, isOpen, onClose }) => {
   const handlePrevImage = () => {
     if (selectedImageIndex === null) return;
     setSelectedImageIndex((prev) => {
-      if (prev === null) return 0; // fallback default
-      return prev === 0 ? images.length - 1 : prev - 1;
+      if (prev === null) return 0;
+      return prev === 0 ? galleryImages.length - 1 : prev - 1;
     });
   };
 
   const handleNextImage = () => {
     if (selectedImageIndex === null) return;
     setSelectedImageIndex((prev) => {
-      if (prev === null) return 0; // fallback default
-      return prev === images.length - 1 ? 0 : prev + 1;
+      if (prev === null) return 0;
+      return prev === galleryImages.length - 1 ? 0 : prev + 1;
     });
   };
 
@@ -36,7 +36,6 @@ const Gallery: React.FC<GalleryProps> = ({ images, isOpen, onClose }) => {
     setSelectedImageIndex(null);
   };
 
-  // Handle keyboard navigation
   React.useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (selectedImageIndex !== null) {
@@ -50,7 +49,6 @@ const Gallery: React.FC<GalleryProps> = ({ images, isOpen, onClose }) => {
     return () => window.removeEventListener("keydown", handleKeyPress);
   }, [selectedImageIndex]);
 
-  // Move the conditional return after all hooks
   if (!isOpen) {
     return null;
   }
@@ -58,7 +56,6 @@ const Gallery: React.FC<GalleryProps> = ({ images, isOpen, onClose }) => {
   return (
     <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
       {selectedImageIndex !== null ? (
-        // Full-screen image view
         <div className="relative w-full h-full flex items-center justify-center">
           <button
             onClick={closeFullscreen}
@@ -85,13 +82,12 @@ const Gallery: React.FC<GalleryProps> = ({ images, isOpen, onClose }) => {
           </button>
 
           <img
-            src={images[selectedImageIndex].src}
-            alt={images[selectedImageIndex].alt}
+            src={galleryImages[selectedImageIndex].src}
+            alt={galleryImages[selectedImageIndex].alt}
             className="max-h-[90vh] max-w-[90vw] object-contain"
           />
         </div>
       ) : (
-        // Grid view
         <div className="relative w-full max-w-4xl bg-white rounded-lg shadow-xl animate-fade-in">
           <button
             onClick={onClose}
@@ -106,7 +102,7 @@ const Gallery: React.FC<GalleryProps> = ({ images, isOpen, onClose }) => {
               Photo Gallery
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {images.map((image, index) => (
+              {galleryImages.map((image, index) => (
                 <div
                   key={index}
                   className="relative aspect-[4/3] overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"

@@ -1,34 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import Gallery from "./Gallery";
-import lakeViewImg from "../images/lake_view.jpg";
-import homeViewImg from "../images/home_view.jpg";
-import houseFromLakeImg from "../images/house_from_lake.jpg";
-import livingRoomImg from "../images/living_room.jpg";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
-
-  const images = [
-    {
-      src: lakeViewImg,
-      alt: "Lake house with stunning water view",
-    },
-    {
-      src: homeViewImg,
-      alt: "Cozy lakeside retreat",
-    },
-    {
-      src: houseFromLakeImg,
-      alt: "Private dock and beach",
-    },
-    {
-      src: livingRoomImg,
-      alt: "Beautiful interior with lake views",
-    },
-  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -73,7 +50,6 @@ const Header = () => {
               </h1>
             </div>
 
-            {/* Desktop Navigation */}
             <nav className="hidden md:flex space-x-8">
               {navItems.map((item, index) => (
                 <a
@@ -87,14 +63,13 @@ const Header = () => {
               ))}
             </nav>
 
-            {/* Mobile Navigation Button */}
             <button
               className="md:hidden"
               onClick={() => setIsOpen(!isOpen)}
               aria-label="Toggle menu"
             >
               {isOpen ? (
-                <X className="text-stone-800\" size={24} />
+                <X className="text-stone-800" size={24} />
               ) : (
                 <Menu className="text-stone-800" size={24} />
               )}
@@ -102,7 +77,6 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {isOpen && (
           <div className="md:hidden bg-white shadow-lg absolute w-full py-4 px-2 transition-all duration-300 ease-in-out">
             <nav className="flex flex-col space-y-4">
@@ -126,11 +100,7 @@ const Header = () => {
         )}
       </header>
 
-      <Gallery
-        images={images}
-        isOpen={isGalleryOpen}
-        onClose={() => setIsGalleryOpen(false)}
-      />
+      <Gallery isOpen={isGalleryOpen} onClose={() => setIsGalleryOpen(false)} />
     </>
   );
 };
