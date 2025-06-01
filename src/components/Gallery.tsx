@@ -8,7 +8,9 @@ interface GalleryProps {
 }
 
 const Gallery: React.FC<GalleryProps> = ({ images, isOpen, onClose }) => {
-  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
+    null
+  );
 
   const handleImageClick = (index: number) => {
     setSelectedImageIndex(index);
@@ -16,16 +18,18 @@ const Gallery: React.FC<GalleryProps> = ({ images, isOpen, onClose }) => {
 
   const handlePrevImage = () => {
     if (selectedImageIndex === null) return;
-    setSelectedImageIndex((prev) => 
-      prev === 0 ? images.length - 1 : prev - 1
-    );
+    setSelectedImageIndex((prev) => {
+      if (prev === null) return 0; // fallback default
+      return prev === 0 ? images.length - 1 : prev - 1;
+    });
   };
 
   const handleNextImage = () => {
     if (selectedImageIndex === null) return;
-    setSelectedImageIndex((prev) => 
-      prev === images.length - 1 ? 0 : prev + 1
-    );
+    setSelectedImageIndex((prev) => {
+      if (prev === null) return 0; // fallback default
+      return prev === images.length - 1 ? 0 : prev + 1;
+    });
   };
 
   const closeFullscreen = () => {
@@ -63,7 +67,7 @@ const Gallery: React.FC<GalleryProps> = ({ images, isOpen, onClose }) => {
           >
             <X size={24} />
           </button>
-          
+
           <button
             onClick={handlePrevImage}
             className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-stone-800 p-2 rounded-full shadow-md transition-all duration-200"
