@@ -10,7 +10,7 @@ const Contact = () => {
     phone: "",
     checkIn: "",
     checkOut: "",
-    guests: "2",
+    guests: "",
     message: "",
   });
 
@@ -195,7 +195,7 @@ const Contact = () => {
                     htmlFor="guests"
                     className="block text-stone-700 font-medium mb-2"
                   >
-                    Number of Guests
+                    Number of Guests (Max 20)
                   </label>
                   <input
                     type="number"
