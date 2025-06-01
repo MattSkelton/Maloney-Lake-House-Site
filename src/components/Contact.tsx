@@ -14,14 +14,6 @@ const Contact = () => {
     message: "",
   });
 
-  const getNextSaturday = (date: Date) => {
-    const day = date.getDay();
-    const diff = (6 - day + 7) % 7; // 6 is Saturday (Sun=0)
-    const nextSaturday = new Date(date);
-    nextSaturday.setDate(date.getDate() + diff);
-    return nextSaturday;
-  };
-
   // Helper: Format date to yyyy-mm-dd string for input[type=date]
   const formatDate = (date: Date) => date.toISOString().split("T")[0];
 
@@ -47,31 +39,16 @@ const Contact = () => {
   ) => {
     const { name, value } = e.target;
 
-    if (name === "checkIn") {
-      const selectedDate = new Date(value);
-      const nextSaturday = getNextSaturday(selectedDate);
-
-      // If selected checkIn is not Saturday, reset it to next Saturday
-      const correctedCheckIn = formatDate(nextSaturday);
-
-      // Automatically set checkOut to 7 days later (next Saturday)
-      const checkOutDate = new Date(nextSaturday);
-      checkOutDate.setDate(checkOutDate.getDate() + 7);
-      const correctedCheckOut = formatDate(checkOutDate);
-
-      setFormData((prev) => ({
-        ...prev,
-        checkIn: correctedCheckIn,
-        checkOut: correctedCheckOut,
-      }));
-    } else if (name === "checkOut") {
-      // Optional: ignore manual checkOut input or enforce same logic
-      // Here we simply prevent user changing checkOut manually:
-      return;
-    } else if (name === "phone") {
+    if (name === "phone") {
       setFormData((prev) => ({
         ...prev,
         [name]: formatPhoneNumber(value),
+      }));
+    } else if (name === "guests") {
+      const guestValue = Math.min(parseInt(value || "0", 10), 20);
+      setFormData((prev) => ({
+        ...prev,
+        [name]: guestValue.toString(),
       }));
     } else {
       setFormData((prev) => ({
@@ -111,7 +88,7 @@ const Contact = () => {
         phone: "",
         checkIn: "",
         checkOut: "",
-        guests: "2",
+        guests: "",
         message: "",
       });
     } catch (error) {
@@ -129,7 +106,7 @@ const Contact = () => {
           </h2>
           <p className="text-lg text-stone-600 max-w-3xl mx-auto">
             Ready for an unforgettable lakeside getaway? Check us out on VRBO or
-            submit a booking request with us to avoid additional rates!
+            submit a direct booking request with us to avoid additional fees!
           </p>
           <a
             href="https://t.vrbo.io/6YCKSv4iPTb"
@@ -225,6 +202,7 @@ const Contact = () => {
                     id="guests"
                     name="guests"
                     value={formData.guests}
+                    max="20"
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-md border border-stone-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
@@ -271,8 +249,8 @@ const Contact = () => {
               </div>
               <p>
                 <b>
-                  Please keep in mind we only accept bookings of at least one
-                  week (Check-In and Check-Out on Saturdays)
+                  Please keep in mind, during the summer we only accept bookings
+                  of at least one week (Check-In and Check-Out on Saturdays)
                 </b>
               </p>
               <br />
@@ -352,7 +330,11 @@ const Contact = () => {
                   Property Policies
                 </h4>
                 <ul className="space-y-2 text-stone-700">
-                  <li>• Must book for a week (Saturday - Saturday)</li>
+                  <li>
+                    • Summer Bookings - Must book for a week (Saturday -
+                    Saturday)
+                  </li>
+                  <li>• Offseason Bookings - Minimum 3 nights</li>
                   <li>• Check-in: 4:00 PM</li>
                   <li>• Check-out: 10:00 AM</li>
                   <li>• No smoking</li>
