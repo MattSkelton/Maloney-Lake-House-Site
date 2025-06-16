@@ -1,5 +1,3 @@
-import aerial1 from '../images/aerial1.jpg';
-import aerial2 from '../images/aerial2.jpg';
 import homeView from '../images/home_view.jpg';
 import houseFromLake from '../images/house_from_lake.jpg';
 import lakeView from '../images/lake_view.jpg';
@@ -36,8 +34,6 @@ import img1699 from '../images/IMG_1699.jpeg';
 import img1700 from '../images/IMG_1700.jpeg';
 
 export const galleryImages = [
-  { src: aerial1, alt: "Aerial view of the lake house", description: "Stunning aerial perspective showcasing the lakefront property and surrounding natural beauty" },
-  { src: aerial2, alt: "Aerial perspective of the property", description: "Bird's eye view highlighting the expansive grounds and lake access" },
   { src: homeView, alt: "Front view of the house", description: "Welcoming front entrance with classic lakehouse architecture" },
   { src: houseFromLake, alt: "View of the house from the lake", description: "Picturesque view of the house as seen from the water" },
   { src: lakeView, alt: "Scenic lake view", description: "Breathtaking panoramic view of Lake Keowee from the property" },
