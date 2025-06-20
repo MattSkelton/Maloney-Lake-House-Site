@@ -36,6 +36,17 @@ const Gallery: React.FC<GalleryProps> = ({ isOpen, onClose }) => {
     setSelectedImageIndex(null);
   };
 
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    // Close gallery if clicking on the backdrop (not on the content)
+    if (e.target === e.currentTarget) {
+      if (selectedImageIndex !== null) {
+        closeFullscreen();
+      } else {
+        onClose();
+      }
+    }
+  };
+
   React.useEffect(() => {
     if (!isOpen) return;
     
@@ -44,25 +55,30 @@ const Gallery: React.FC<GalleryProps> = ({ isOpen, onClose }) => {
         if (e.key === "ArrowLeft") handlePrevImage();
         if (e.key === "ArrowRight") handleNextImage();
         if (e.key === "Escape") closeFullscreen();
+      } else if (e.key === "Escape") {
+        onClose();
       }
     };
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [selectedImageIndex, isOpen]);
+  }, [selectedImageIndex, isOpen, onClose]);
 
   if (!isOpen) {
     return null;
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 overflow-y-auto">
+    <div 
+      className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 overflow-y-auto"
+      onClick={handleBackdropClick}
+    >
       {selectedImageIndex !== null ? (
         // Fullscreen view
         <div className="relative w-full h-full flex items-center justify-center">
           <button
             onClick={closeFullscreen}
-            className="absolute right-4 top-4 text-white hover:text-stone-300 transition-colors z-10"
+            className="absolute right-4 top-4 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full shadow-lg transition-all duration-200 z-10 backdrop-blur-sm border border-white/20"
             aria-label="Close fullscreen view"
           >
             <X size={24} />
@@ -90,7 +106,7 @@ const Gallery: React.FC<GalleryProps> = ({ isOpen, onClose }) => {
               alt={galleryImages[selectedImageIndex].alt}
               className="max-h-[80vh] max-w-[90vw] object-contain"
             />
-            <div className="mt-4 text-center text-white bg-black/60 px-4 py-2 rounded-lg max-w-[90vw]">
+            <div className="mt-4 text-center text-white bg-black/60 px-4 py-2 rounded-lg max-w-[90vw] backdrop-blur-sm">
               <p className="text-lg font-medium mb-1">
                 {galleryImages[selectedImageIndex].alt}
               </p>
@@ -102,10 +118,13 @@ const Gallery: React.FC<GalleryProps> = ({ isOpen, onClose }) => {
         </div>
       ) : (
         // Scrollable Grid View
-        <div className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white rounded-lg shadow-xl animate-fade-in">
+        <div 
+          className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white rounded-lg shadow-xl animate-fade-in"
+          onClick={(e) => e.stopPropagation()} // Prevent closing when clicking on the modal content
+        >
           <button
             onClick={onClose}
-            className="sticky top-4 right-4 float-right text-stone-600 hover:text-stone-800 transition-colors z-10"
+            className="sticky top-4 right-4 float-right bg-stone-100 hover:bg-stone-200 text-stone-600 hover:text-stone-800 p-2 rounded-full shadow-md transition-all duration-200 z-10"
             aria-label="Close gallery"
           >
             <X size={24} />
