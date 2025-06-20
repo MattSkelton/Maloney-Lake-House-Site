@@ -39,11 +39,13 @@ const About = () => {
           </div>
           <div className="order-1 lg:order-2">
             <div className="rounded-lg overflow-hidden shadow-xl transform hover:scale-[1.02] transition-transform duration-300">
-              <div>
+              <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
                 <iframe
-                  src="https://player.vimeo.com/video/170536418?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                  src="https://player.vimeo.com/video/170536418?badge=0&autopause=0&player_id=0&app_id=58479"
                   allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
                   title="Lake House Aerial"
+                  className="absolute top-0 left-0 w-full h-full"
+                  style={{ border: 0 }}
                 ></iframe>
               </div>
               <script src="https://player.vimeo.com/api/player.js"></script>
