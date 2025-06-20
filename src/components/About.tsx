@@ -39,11 +39,14 @@ const About = () => {
           </div>
           <div className="order-1 lg:order-2">
             <div className="rounded-lg overflow-hidden shadow-xl transform hover:scale-[1.02] transition-transform duration-300">
-              <img
-                src={homeViewImg}
-                alt="Maloney Lake House exterior view"
-                className="w-full h-auto"
-              />
+              <div>
+                <iframe
+                  src="https://player.vimeo.com/video/170536418?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                  title="Lake House Aerial"
+                ></iframe>
+              </div>
+              <script src="https://player.vimeo.com/api/player.js"></script>
             </div>
           </div>
         </div>

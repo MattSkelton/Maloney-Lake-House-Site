@@ -1,4 +1,3 @@
-import homeView from '../images/home_view.jpg';
 import houseFromLake from '../images/house_from_lake.jpg';
 import lakeView from '../images/lake_view.jpg';
 import livingRoom from '../images/living_room.jpg';

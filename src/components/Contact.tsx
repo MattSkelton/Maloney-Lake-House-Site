@@ -83,11 +83,13 @@ const Contact = () => {
       const checkOut = new Date(formData.checkOut);
       const timeDiff = checkOut.getTime() - checkIn.getTime();
       const nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
-      return nights > 0 ? `${nights} night${nights > 1 ? 's' : ''}` : "Invalid dates";
+      return nights > 0
+        ? `${nights} night${nights > 1 ? "s" : ""}`
+        : "Invalid dates";
     };
 
     const templateParams = {
-      to_email: "info@maloneylakehouse.com",
+      to_email: "maloneylakehousebooking@gmail.com",
       from_name: formData.name,
       from_email: formData.email,
       phone: formData.phone || "Not provided",
@@ -119,16 +121,18 @@ Please respond to this booking request as soon as possible.
 
     try {
       // Initialize EmailJS with your public key
-      emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your actual public key
+      emailjs.init("h5tb7MajjcKtPdQwM"); // Replace with your actual public key
 
       const result = await emailjs.send(
-        "YOUR_SERVICE_ID", // Replace with your EmailJS service ID
-        "YOUR_TEMPLATE_ID", // Replace with your EmailJS template ID
+        "Maloney Lake House", // Replace with your EmailJS service ID
+        "template_2uyz9fv", // Replace with your EmailJS template ID
         templateParams
       );
 
       console.log("Email sent successfully:", result);
-      alert("Thank you for your booking request! We will contact you within 24 hours to confirm availability and discuss details.");
+      alert(
+        "Thank you for your booking request! We will contact you within 24 hours to confirm availability and discuss details."
+      );
 
       // Reset form
       setFormData({
@@ -142,7 +146,9 @@ Please respond to this booking request as soon as possible.
       });
     } catch (error) {
       console.error("Failed to send email:", error);
-      alert("We're sorry, but there was an issue submitting your booking request. Please try again or contact us directly at info@maloneylakehouse.com or (813) 505-8341.");
+      alert(
+        "We're sorry, but there was an issue submitting your booking request. Please try again or contact us directly at maloneylakehousebooking@gmail.com or (813) 505-8341."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -302,10 +308,12 @@ Please respond to this booking request as soon as possible.
                   />
                 </div>
               </div>
-              
+
               <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
                 <p className="text-blue-800 font-medium text-sm">
-                  <strong>Summer Booking Policy:</strong> During peak summer season, we require a minimum one-week stay with Saturday check-in and check-out.
+                  <strong>Summer Booking Policy:</strong> During peak summer
+                  season, we require a minimum one-week stay with Saturday
+                  check-in and check-out.
                 </p>
               </div>
 
@@ -353,10 +361,10 @@ Please respond to this booking request as soon as possible.
                   <div>
                     <p className="font-medium text-stone-800">Email Us</p>
                     <a
-                      href="mailto:info@maloneylakehouse.com"
+                      href="mailto:maloneylakehousebooking@gmail.com"
                       className="text-blue-600 hover:underline"
                     >
-                      info@maloneylakehouse.com
+                      maloneylakehousebooking@gmail.com
                     </a>
                   </div>
                 </div>
@@ -405,7 +413,8 @@ Please respond to this booking request as soon as possible.
 
               <div className="mt-6 p-4 bg-white rounded-lg border border-blue-200">
                 <p className="text-sm text-stone-600">
-                  <strong>Direct Booking Benefits:</strong> Book directly with us to avoid platform fees and enjoy personalized service!
+                  <strong>Direct Booking Benefits:</strong> Book directly with
+                  us to avoid platform fees and enjoy personalized service!
                 </p>
               </div>
             </div>
