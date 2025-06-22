@@ -17,7 +17,7 @@ const About = () => {
               seeking relaxation and adventure alike.
             </p>
             <p className="text-lg text-stone-700 mb-4 leading-relaxed">
-              Built in 2004 and lovingly maintained, our home features modern
+              Built in 2003 and lovingly maintained, our home features modern
               amenities while preserving the classic lakehouse charm.
               Floor-to-ceiling windows offer breathtaking views from almost
               every room.
