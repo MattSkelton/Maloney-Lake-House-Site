@@ -1,5 +1,3 @@
-import homeViewImg from "../images/home_view.jpg";
-
 const About = () => {
   const handleBookNow = () => {
     const bookingSection = document.getElementById("book-now");
@@ -39,7 +37,10 @@ const About = () => {
           </div>
           <div className="order-1 lg:order-2">
             <div className="rounded-lg overflow-hidden shadow-xl transform hover:scale-[1.02] transition-transform duration-300">
-              <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+              <div
+                className="relative w-full"
+                style={{ paddingBottom: "56.25%" }}
+              >
                 <iframe
                   src="https://player.vimeo.com/video/170536418?badge=0&autopause=0&player_id=0&app_id=58479"
                   allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
