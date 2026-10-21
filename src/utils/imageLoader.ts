@@ -13,7 +13,6 @@ import img1671 from '../images/IMG_1671.jpeg';
 import img1672 from '../images/IMG_1672.jpeg';
 import img1673 from '../images/IMG_1673.jpeg';
 import img1674 from '../images/IMG_1674.jpeg';
-import img1676 from '../images/IMG_1676.jpeg';
 import img1679 from '../images/IMG_1679.jpeg';
 import img1681 from '../images/IMG_1681.jpeg';
 import img1682 from '../images/IMG_1682.jpeg';
@@ -26,6 +25,8 @@ import img1694 from '../images/IMG_1694.jpeg';
 import img1695 from '../images/IMG_1695.jpeg';
 import img1700 from '../images/IMG_1700.jpeg';
 import img3427 from '../images/IMG_3427.jpeg';
+import img4994 from '../images/IMG_4994.jpeg';
+import img4997 from '../images/IMG_4997.jpeg';
 import img5009 from '../images/IMG_5009.jpeg';
 
 export const galleryImages = [
@@ -46,7 +47,8 @@ export const galleryImages = [
   { src: img1672, alt: "Beautiful backyard and lake access", description: "Beautiful spacious backyard with direct lake access and dock" },
   { src: img1673, alt: "Small office card or game room", description: "Main floor office or card/game room" },
   { src: img1674, alt: "Top floor girls room", description: "An adorable bedroom with 3 full beds and 1 twin" },
-  { src: img1676, alt: "Bedroom interior", description: "Cozy bedroom with two twin beds and a lake view on the top floor" },
+  { src: img4994, alt: "Top Floor King Bedroom", description: "Bright and inviting top-floor bedroom with a comfortable king bed and a relaxing, private feel" },
+  { src: img4997, alt: "Top Floor King Bedroom", description: "A second view of the spacious top-floor king bedroom, featuring abundant natural light and generous storage" },
   { src: img1679, alt: "Top floor queen", description: "A comfortable queen bed on the top floor" },
   { src: img1683, alt: "Top floor boys room", description: "Comfortable sleeping arrangements for four young children" },
   { src: img1681, alt: "Bunk #1", description: "Full bed on the bottom with a twin on top" },

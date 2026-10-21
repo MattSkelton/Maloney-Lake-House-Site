@@ -1,7 +1,7 @@
 const About = () => {
-  const handleBookNow = () => {
-    const bookingSection = document.getElementById("book-now");
-    bookingSection?.scrollIntoView({ behavior: "smooth" });
+  const handleContactUs = () => {
+    const contactSection = document.getElementById("contact");
+    contactSection?.scrollIntoView({ behavior: "smooth" });
   };
   return (
     <section className="py-16 md:py-24 bg-stone-100" id="about">
@@ -30,9 +30,9 @@ const About = () => {
             </p>
             <button
               className="bg-blue-800 hover:bg-blue-900 text-white font-medium py-3 px-8 rounded-md transition-all duration-300"
-              onClick={handleBookNow}
+              onClick={handleContactUs}
             >
-              Book Now
+              Contact Us Now
             </button>
           </div>
           <div className="order-1 lg:order-2">

@@ -32,7 +32,7 @@ const Header = () => {
     { label: "Amenities", href: "#amenities" },
     { label: "Gallery", href: "#gallery", onClick: handleGalleryClick },
     { label: "Location", href: "#location" },
-    { label: "Book Now", href: "#book-now" },
+    { label: "Contact Us Now", href: "#contact" },
   ];
 
   return (

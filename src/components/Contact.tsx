@@ -1,7 +1,63 @@
 import React, { useState } from "react";
-import { Calendar, Mail, Phone } from "lucide-react";
-import vrboImage from "../images/vrbo.png";
+import { Calendar, Mail, Phone, Star } from "lucide-react";
 import emailjs from "emailjs-com";
+
+const parseLocalDate = (dateString: string) => {
+  const [year, month, day] = dateString.split("-").map(Number);
+  return new Date(year, month - 1, day);
+};
+
+const formatDateForInput = (date: Date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
+const addDays = (date: Date, days: number) => {
+  const nextDate = new Date(date);
+  nextDate.setDate(nextDate.getDate() + days);
+  return nextDate;
+};
+
+const getNightCount = (checkIn: string, checkOut: string) => {
+  if (!checkIn || !checkOut) return 0;
+  const millisecondsPerDay = 1000 * 60 * 60 * 24;
+  return Math.round(
+    (parseLocalDate(checkOut).getTime() - parseLocalDate(checkIn).getTime()) /
+      millisecondsPerDay
+  );
+};
+
+const stayTouchesPeakSummer = (checkIn: Date, checkOut: Date) => {
+  for (let year = checkIn.getFullYear(); year <= checkOut.getFullYear(); year += 1) {
+    const summerStart = new Date(year, 5, 1);
+    const summerEnd = new Date(year, 8, 1);
+    if (checkIn < summerEnd && checkOut > summerStart) return true;
+  }
+  return false;
+};
+
+const validateStay = (checkInValue: string, checkOutValue: string) => {
+  if (!checkInValue || !checkOutValue) return "";
+
+  const checkIn = parseLocalDate(checkInValue);
+  const checkOut = parseLocalDate(checkOutValue);
+  const nights = getNightCount(checkInValue, checkOutValue);
+
+  if (nights <= 0) return "Check-out must be after check-in.";
+
+  if (stayTouchesPeakSummer(checkIn, checkOut)) {
+    if (checkIn.getDay() !== 6 || checkOut.getDay() !== 6) {
+      return "Peak-summer stays must check in and check out on a Saturday.";
+    }
+    if (nights < 7) return "Peak-summer stays require at least seven nights.";
+  } else if (nights < 3) {
+    return "Off-season stays require at least three nights.";
+  }
+
+  return "";
+};
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -15,12 +71,15 @@ const Contact = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Helper: Format date to yyyy-mm-dd string for input[type=date]
-  const formatDate = (date: Date) => date.toISOString().split("T")[0];
+  const [formError, setFormError] = useState("");
 
   const today = new Date();
-  const minCheckInDate = formatDate(today);
+  const minCheckInDate = formatDateForInput(today);
+  const minCheckOutDate = formData.checkIn
+    ? formatDateForInput(addDays(parseLocalDate(formData.checkIn), 1))
+    : minCheckInDate;
+  const selectedNights = getNightCount(formData.checkIn, formData.checkOut);
+  const dateError = validateStay(formData.checkIn, formData.checkOut);
 
   const formatPhoneNumber = (value: string): string => {
     const cleaned = value.replace(/\D/g, "").slice(0, 10); // remove non-digits
@@ -40,6 +99,7 @@ const Contact = () => {
     >
   ) => {
     const { name, value } = e.target;
+    setFormError("");
 
     if (name === "phone") {
       setFormData((prev) => ({
@@ -52,6 +112,15 @@ const Contact = () => {
         ...prev,
         [name]: guestValue.toString(),
       }));
+    } else if (name === "checkIn") {
+      setFormData((prev) => ({
+        ...prev,
+        checkIn: value,
+        checkOut:
+          prev.checkOut && getNightCount(value, prev.checkOut) <= 0
+            ? ""
+            : prev.checkOut,
+      }));
     } else {
       setFormData((prev) => ({
         ...prev,
@@ -62,12 +131,24 @@ const Contact = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const stayError = validateStay(formData.checkIn, formData.checkOut);
+    if (stayError) {
+      setFormError(stayError);
+      return;
+    }
+
+    if (formData.phone && formData.phone.replace(/\D/g, "").length !== 10) {
+      setFormError("Please enter a complete 10-digit phone number.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     // Format dates for better readability
     const formatDateForEmail = (dateString: string) => {
       if (!dateString) return "Not specified";
-      const date = new Date(dateString);
+      const date = parseLocalDate(dateString);
       return date.toLocaleDateString("en-US", {
         weekday: "long",
         year: "numeric",
@@ -76,16 +157,9 @@ const Contact = () => {
       });
     };
 
-    // Calculate number of nights
     const calculateNights = () => {
-      if (!formData.checkIn || !formData.checkOut) return "Not specified";
-      const checkIn = new Date(formData.checkIn);
-      const checkOut = new Date(formData.checkOut);
-      const timeDiff = checkOut.getTime() - checkIn.getTime();
-      const nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
-      return nights > 0
-        ? `${nights} night${nights > 1 ? "s" : ""}`
-        : "Invalid dates";
+      const nights = getNightCount(formData.checkIn, formData.checkOut);
+      return `${nights} night${nights === 1 ? "" : "s"}`;
     };
 
     const templateParams = {
@@ -144,6 +218,7 @@ Please respond to this booking request as soon as possible.
         guests: "",
         message: "",
       });
+      setFormError("");
     } catch (error) {
       console.error("Failed to send email:", error);
       alert(
@@ -155,34 +230,18 @@ Please respond to this booking request as soon as possible.
   };
 
   return (
-    <section className="py-16 md:py-24 bg-white" id="book-now">
+    <section
+      className="scroll-mt-20 py-16 md:py-24 bg-white"
+      id="contact"
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-serif font-bold text-blue-950 mb-4">
-            Book Your Stay
+            Contact Us
           </h2>
           <p className="text-lg text-stone-600 max-w-3xl mx-auto">
-            Ready for an unforgettable lakeside getaway? Check us out on VRBO or
-            submit a direct booking request with us to avoid additional fees!
+            Fill out your information below and we'll get back to you about your stay.
           </p>
-          <a
-            href="https://t.vrbo.io/6YCKSv4iPTb"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block mx-auto mt-6 rounded-md transition-all duration-300 transform hover:scale-105 shadow-md"
-            style={{
-              backgroundImage: `url(${vrboImage})`,
-              backgroundSize: "contain",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center",
-              width: "200px", // Adjust as needed
-              height: "60px", // Adjust as needed
-              backgroundColor: "#0E214B", // Optional, fallback color
-            }}
-            aria-label="Book on VRBO"
-          >
-            {/* Empty content to keep button visually focused on background image */}
-          </a>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -245,6 +304,7 @@ Please respond to this booking request as soon as possible.
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-md border border-stone-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="123-456-7890"
+                    inputMode="tel"
                   />
                 </div>
 
@@ -265,6 +325,7 @@ Please respond to this booking request as soon as possible.
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-md border border-stone-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Enter number of guests"
+                    required
                   />
                 </div>
               </div>
@@ -301,7 +362,7 @@ Please respond to this booking request as soon as possible.
                     id="checkOut"
                     name="checkOut"
                     value={formData.checkOut}
-                    min={formData.checkIn || minCheckInDate}
+                    min={minCheckOutDate}
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-md border border-stone-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
@@ -309,10 +370,25 @@ Please respond to this booking request as soon as possible.
                 </div>
               </div>
 
+              {selectedNights > 0 && !dateError && (
+                <div className="mb-6 rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800">
+                  {selectedNights} night{selectedNights === 1 ? "" : "s"} selected
+                </div>
+              )}
+
+              {(dateError || formError) && (
+                <div
+                  className="mb-6 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-800"
+                  role="alert"
+                >
+                  {formError || dateError}
+                </div>
+              )}
+
               <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
                 <p className="text-blue-800 font-medium text-sm">
-                  <strong>Summer Booking Policy:</strong> During peak summer
-                  season, we require a minimum one-week stay with Saturday
+                  <strong>Summer Booking Policy:</strong> From June through
+                  August, we require a minimum one-week stay with Saturday
                   check-in and check-out.
                 </p>
               </div>
@@ -389,6 +465,23 @@ Please respond to this booking request as soon as possible.
                     <p className="text-stone-700">
                       We typically respond within 24 hours
                     </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start">
+                  <Star className="w-5 h-5 text-blue-700 mt-1 mr-3" />
+                  <div>
+                    <p className="font-medium text-stone-800">
+                      Share Your Experience
+                    </p>
+                    <a
+                      href="https://maps.app.goo.gl/CxmE7popA2rfyuPa9?g_st=i&utm_campaign=ac-im"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline"
+                    >
+                      Leave a Google Review
+                    </a>
                   </div>
                 </div>
               </div>

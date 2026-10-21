@@ -50,10 +50,10 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="#book-now"
+                  href="#contact"
                   className="text-blue-200 hover:text-white transition-colors"
                 >
-                  Book Now
+                  Contact Us Now
                 </a>
               </li>
             </ul>

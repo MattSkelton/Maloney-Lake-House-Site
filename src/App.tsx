@@ -7,6 +7,7 @@ import Amenities from './components/Amenities';
 import Location from './components/Location';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import MobileContactButton from './components/MobileContactButton';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Contact />
       </main>
       <Footer />
+      <MobileContactButton />
     </div>
   );
 }

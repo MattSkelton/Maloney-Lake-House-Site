@@ -2,18 +2,57 @@ import ImageCarousel from "./ImageCarousel";
 import Gallery from "./Gallery";
 import { useState } from "react";
 import { galleryImages } from "../utils/imageLoader";
+import { Check, Share2 } from "lucide-react";
 
 const Hero = () => {
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
 
-  const handleBookNow = () => {
-    const bookingSection = document.getElementById("book-now");
-    bookingSection?.scrollIntoView({ behavior: "smooth" });
+  const handleContactUs = () => {
+    const contactSection = document.getElementById("contact");
+    contactSection?.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleSeeMore = (e: React.MouseEvent) => {
     e.preventDefault();
     setIsGalleryOpen(true);
+  };
+
+  const copySiteLink = async () => {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(window.location.href);
+    } else {
+      const textArea = document.createElement("textarea");
+      textArea.value = window.location.href;
+      textArea.style.position = "fixed";
+      textArea.style.opacity = "0";
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand("copy");
+      textArea.remove();
+    }
+
+    setLinkCopied(true);
+    window.setTimeout(() => setLinkCopied(false), 2000);
+  };
+
+  const handleShare = async () => {
+    const shareData = {
+      title: "Maloney Lake House",
+      text: "Take a look at the Maloney Lake House on Lake Keowee.",
+      url: window.location.href,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await copySiteLink();
+      }
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") return;
+      await copySiteLink();
+    }
   };
 
   // Select first 4 images for the carousel
@@ -37,18 +76,26 @@ const Hero = () => {
               Lake House
             </p>
             <div className="flex justify-center">
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <button
-                  onClick={handleBookNow}
+                  onClick={handleContactUs}
                   className="bg-blue-800 hover:bg-blue-900 text-white font-medium py-3 px-8 rounded-md transition-all duration-300 transform hover:scale-105"
                 >
-                  Book Your Stay
+                  Contact Us Now
                 </button>
                 <button
                   onClick={handleSeeMore}
                   className="bg-white text-blue-800 border border-blue-800 hover:bg-blue-100 font-medium py-3 px-8 rounded-md transition-all duration-300 transform hover:scale-105"
                 >
                   See More
+                </button>
+                <button
+                  onClick={handleShare}
+                  className="flex items-center justify-center gap-2 bg-black/40 text-white border border-white/70 hover:bg-black/60 font-medium py-3 px-8 rounded-md transition-all duration-300 transform hover:scale-105 backdrop-blur-sm"
+                  aria-label="Share Maloney Lake House"
+                >
+                  {linkCopied ? <Check size={18} /> : <Share2 size={18} />}
+                  {linkCopied ? "Link Copied" : "Share"}
                 </button>
               </div>
             </div>

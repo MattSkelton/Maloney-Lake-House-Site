@@ -55,7 +55,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
   }, [autoplay, autoplaySpeed, goToNext]);
 
   return (
-    <div className="relative h-full w-full overflow-hidden">
+    <div className="relative w-full h-full overflow-hidden">
       <div
         className="absolute inset-0 flex transition-transform duration-500 ease-in-out"
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -63,13 +63,13 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
         {images.map((image, index) => (
           <div
             key={index}
-            className="min-w-full h-full flex-shrink-0"
+            className="min-w-full flex-shrink-0"
             style={{ minWidth: "100%" }}
           >
             <img
               src={image.src}
               alt={image.alt}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover md:object-cover md:h-full object-contain h-[60vw] bg-black"
             />
           </div>
         ))}
